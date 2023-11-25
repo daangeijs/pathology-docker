@@ -63,6 +63,11 @@ ENV PYTHONPATH=/opt/ASAP/bin/:$PYTHONPATH
 COPY requirements-base.txt /tmp/
 RUN pip install -r /tmp/requirements-base.txt
 
+# Run stage specific tests
+COPY tests.py /tests/
+RUN python /tests/tests.py base-cpu
+
+
 # === Pathology Pytorch Base Image with Pyvips and ASAP ===
 FROM base-cpu as pytorch
 # Set ARGs for CUDA version
@@ -76,6 +81,10 @@ RUN pip install torch==${TORCH_VERSION}+cu${CUDA_VERSION} torchvision==${TORCHVI
 # Copy and install common Python Packages
 COPY requirements-gpu.txt /tmp/
 RUN pip install -r /tmp/requirements-gpu.txt
+
+# Run stage specific tests
+COPY tests.py /tests/
+RUN python /tests/tests.py pytorch
 
 # === TensorFlow Stage ===
 FROM base-cpu as tensorflow
@@ -91,6 +100,10 @@ ENV FOR_DISABLE_CONSOLE_CTRL_HANDLER 1
 ENV TF_CPP_MIN_LOG_LEVEL 3
 RUN env | grep '^FOR_DISABLE_CONSOLE_CTRL_HANDLER=\|^TF_CPP_MIN_LOG_LEVEL=' >> /etc/environment
 
+# Run stage specific tests
+COPY tests.py /tests/
+RUN python /tests/tests.py tensorflow
+
 # === CPU Version ===
 FROM base-cpu as cpu
 
@@ -98,4 +111,6 @@ FROM base-cpu as cpu
 COPY requirements-cpu.txt /tmp/
 RUN pip install -r /tmp/requirements-cpu.txt
 
-
+# Run stage specific tests
+COPY tests.py /tests/
+RUN python /tests/tests.py base-cpu
