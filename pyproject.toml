@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "pathology-docker"
+version = "0.1.0"
+description = "a docker for pathology"
+authors = ["Daan Geijs <daan@geijs.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "*"
+pathlib = "*"
+wholeslidedata = { git = "https://github.com/DIAGNijmegen/pathology-whole-slide-data.git", branch = "main" }
+scikit-image = "*"
+scikit-learn = "*"
+scipy = "*"
+seaborn = "*"
+pillow = { version = ">=8.3.2" }
+openpyxl = "*"
+matplotlib = "*"
+jupyterlab = "*"
+opencv-python-headless = "*"
+pyvips = "*"
+shapely = "*"
+tqdm = "*"
+xlrd = { version = ">=2.0.0" }
+six = "*"
+fastprogress = "*"
+numpy = "1.26.2"
+
+[tool.poetry.extras]
+cpu = ["gcapi", "simpleitk", "rasterio"]
+gpu = ["albumentations", "wandb", "pytorch-lightning"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
