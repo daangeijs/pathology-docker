@@ -65,7 +65,7 @@ RUN pip install -r /tmp/requirements-base.txt
 
 # Run stage specific tests
 COPY tests.py /tests/
-RUN python /tests/tests.py base-cpu
+RUN python3 /tests/tests.py base-cpu
 
 
 # === Pathology Pytorch Base Image with Pyvips and ASAP ===
@@ -84,7 +84,7 @@ RUN pip install -r /tmp/requirements-gpu.txt
 
 # Run stage specific tests
 COPY tests.py /tests/
-RUN python /tests/tests.py pytorch
+RUN python3 /tests/tests.py pytorch
 
 # === TensorFlow Stage ===
 FROM base-cpu as tensorflow
@@ -93,7 +93,7 @@ FROM base-cpu as tensorflow
 ARG TENSORFLOW_VERSION=2.12.0
 
 # Install TensorFlow
-RUN pip install tensorflow==${TENSORFLOW_VERSION} -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install tensorflow[and-cuda]==${TENSORFLOW_VERSION} -f https://download.pytorch.org/whl/torch_stable.html
 
 # Set TensorFlow-specific environment variables
 ENV FOR_DISABLE_CONSOLE_CTRL_HANDLER 1
@@ -102,7 +102,7 @@ RUN env | grep '^FOR_DISABLE_CONSOLE_CTRL_HANDLER=\|^TF_CPP_MIN_LOG_LEVEL=' >> /
 
 # Run stage specific tests
 COPY tests.py /tests/
-RUN python /tests/tests.py tensorflow
+RUN python3 /tests/tests.py tensorflow
 
 # === CPU Version ===
 FROM base-cpu as cpu
@@ -113,4 +113,4 @@ RUN pip install -r /tmp/requirements-cpu.txt
 
 # Run stage specific tests
 COPY tests.py /tests/
-RUN python /tests/tests.py base-cpu
+RUN python3 /tests/tests.py base-cpu

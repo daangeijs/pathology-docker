@@ -33,11 +33,10 @@ def test_pytorch():
 
 def test_tensorflow():
     import tensorflow as tf
-    if not tf.test.is_gpu_available():
-        print("Warning: GPU not available, testing on CPU.")
-    # Simple TensorFlow computation to test CPU functionality
-    x = tf.random.uniform([5, 3])
-    print("TensorFlow CPU test passed with tensor:", x.numpy())
+    if tf.config.list_physical_devices('GPU'):
+        print("Testing TensorFlow on GPU.")
+    else:
+        print("Warning: GPU not available for TensorFlow, testing on CPU.")
 
 def test_pytorch_lightning():
     import pytorch_lightning
@@ -53,12 +52,22 @@ def run_tests(stage):
         test_scipy()
 
     elif stage == "pytorch":
+        test_multiresolutionimageinterface()
+        test_pyvips()
+        test_opencv()
+        test_numpy()
+        test_scipy()
         test_pytorch()
         test_pytorch_lightning()
 
     elif stage == "tensorflow":
+        test_multiresolutionimageinterface()
+        test_pyvips()
+        test_opencv()
+        test_numpy()
+        test_scipy()
         test_tensorflow()
-
+        
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         run_tests(sys.argv[1])
