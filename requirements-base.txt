@@ -6,6 +6,7 @@ scikit-learn
 scipy
 seaborn
 pillow>=8.3.2
+numpy==1.24.4
 openpyxl
 matplotlib
 jupyterlab
