@@ -1,5 +1,5 @@
 # === Builder stage: Build ASAP and Pyvips from source ===
-FROM ubuntu:22.04 as builder
+FROM ubuntu:22.04 AS builder
 
 ARG VIPS_VERSION=8.14.2
 ARG ASAP_URL=https://github.com/computationalpathologygroup/ASAP/releases/download/ASAP-2.1-(Nightly)/ASAP-2.1-Ubuntu2204.deb
@@ -35,7 +35,7 @@ RUN wget https://github.com/libvips/libvips/releases/download/v${VIPS_VERSION}/v
     cd build && meson compile && meson test && meson install && ldconfig
 
 # === Pathology CPU Base Image with Pyvips and ASAP ===
-FROM ubuntu:22.04 as base-cpu
+FROM ubuntu:22.04 AS base-cpu
 
 ENV DEBIAN_FRONTEND=noninteractive TZ=Europe/Amsterdam
 
@@ -87,7 +87,7 @@ COPY tests.py /tests/
 RUN python3 /tests/tests.py pytorch
 
 # === TensorFlow Stage ===
-FROM base-cpu as tensorflow
+FROM base-cpu AS tensorflow
 
 # Propagate build args
 ARG TENSORFLOW_VERSION=2.12.0
@@ -105,7 +105,7 @@ COPY tests.py /tests/
 RUN python3 /tests/tests.py tensorflow
 
 # === CPU Version ===
-FROM base-cpu as cpu
+FROM base-cpu AS cpu
 
 # Copy and install common Python Packages
 COPY requirements-cpu.txt /tmp/
