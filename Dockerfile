@@ -69,7 +69,7 @@ RUN python3 /tests/tests.py base-cpu
 
 
 # === Pathology Pytorch Base Image with Pyvips and ASAP ===
-FROM base-cpu as pytorch
+FROM base-cpu AS pytorch
 # Set ARGs for CUDA version
 ARG CUDA_VERSION=118
 ARG TORCH_VERSION=2.0.1
